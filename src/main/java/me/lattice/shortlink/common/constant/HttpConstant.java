@@ -1,4 +1,4 @@
-package me.lattice.shortlink.constant;
+package me.lattice.shortlink.common.constant;
 
 /**
  * @description: Http服务常量

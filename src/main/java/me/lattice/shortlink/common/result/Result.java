@@ -37,6 +37,12 @@ public class Result<T> implements Serializable {
 
    private Result() {}
 
+   public Result(T data) {
+      this.code = HttpStatus.OK.value();
+      this.message = "success";
+      this.data = data;
+   }
+
    public static Result success() {
       Result result = new Result();
       result.setCode(HttpStatus.OK.value());
