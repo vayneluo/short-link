@@ -38,4 +38,17 @@ public class ShortLinkBizService {
     public void insertUrlMapping(UrlMapping urlMapping) {
         urlMappingMapper.insert(urlMapping);
     }
+
+    
+    /***
+     * @description: 短码查询URL Mapping
+     * @param: [shortLink] 短码
+     * @author: Lattice
+     * @date: 2022/6/28 14:22
+     */ 
+    public UrlMapping findUrlMappingByShortLink(String shortLink) {
+        QueryWrapper<UrlMapping> wrapper = new QueryWrapper<>();
+        wrapper.eq("short_link", shortLink);
+        return urlMappingMapper.selectOne(wrapper);
+    }
 }

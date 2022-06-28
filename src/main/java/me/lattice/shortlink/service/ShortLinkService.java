@@ -13,6 +13,7 @@ import me.lattice.shortlink.entity.UrlMapping;
 import me.lattice.shortlink.service.biz.ShortLinkBizService;
 import me.lattice.shortlink.web.req.ShortLinkGenReq;
 import me.lattice.shortlink.web.rsp.ShortLinkGenRsp;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,10 +59,12 @@ public class ShortLinkService {
 
             return ShortLinkGenRsp.builder()
                     .shortLink(domainProperty.convertShortLink(shortLink))
+                    .originalUrl(req.getOriginUrl())
                     .build();
         }
         return ShortLinkGenRsp.builder()
                 .shortLink(genSystem(originUrl, md5OriginUrl))
+                .originalUrl(req.getOriginUrl())
                 .build();
     }
 
@@ -96,4 +99,35 @@ public class ShortLinkService {
         return domainProperty.convertShortLink(shortLink);
     }
 
+    /***
+     * @description: 短码查询原始长链接，用于重定向跳转
+     * @param: [shortLink] 短码
+     * @author: Vayne.Luo
+     * @date: 2022/6/28 14:19
+     */
+    public String getShortLink(String shortLink) {
+        String originalUrl = RedisUtils.getStrValue(RedisUtils.generateKey(shortLink));
+        // 缓存命中
+        if (StringUtils.isNotBlank(originalUrl)) {
+            return sendLongUrlOr404(originalUrl);
+        }
+        // 短码查询数据库，redis 可能缓存过期了
+        UrlMapping mapping = shortLinkBizService.findUrlMappingByShortLink(shortLink);
+        if (Objects.nonNull(mapping)) {
+            originalUrl = mapping.getOriginUrl();
+            // set redis cache
+            RedisUtils.setValue(RedisUtils.generateKey(shortLink), RedisConstant.SHORT_LINK_TTL);
+        }
+        return sendLongUrlOr404(originalUrl);
+    }
+
+
+    /***
+     * @description: 原始长链接跳转 or 404跳转
+     * @author: lattice
+     * @date: 2022/6/28 14:14
+     */
+    private String sendLongUrlOr404(String originalUrl) {
+        return StringUtils.isNotBlank(originalUrl) ? originalUrl : "error/404";
+    }
 }

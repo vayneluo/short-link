@@ -4,10 +4,7 @@ import me.lattice.shortlink.common.constant.RedisKeyConstant;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class RedisUtils {
@@ -98,6 +95,17 @@ public class RedisUtils {
         return redisTemplate.opsForValue().get(key);
     }
 
+    /**
+     * 获取字符串对象
+     * @param key 键
+     * @return 字符串
+     */
+    public static String getStrValue(final String key) {
+        return Objects.nonNull(redisTemplate.opsForValue().get(key))
+                ? String.valueOf(redisTemplate.opsForValue().get(key))
+                : null;
+    }
+
     // 存储Hash操作
 
     /**
@@ -109,6 +117,15 @@ public class RedisUtils {
      */
     public static boolean hasHashKey(final String key,String hkey) {
         return redisTemplate.opsForHash().hasKey(key,hkey);
+    }
+
+    /**
+     * 确定hashKey是否存在
+     * @param key 键
+     * @return true=存在；false=不存在
+     */
+    public static boolean exists(final String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
     /**

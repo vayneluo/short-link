@@ -21,4 +21,7 @@ public class ShortLinkGenRsp {
 
     @ApiModelProperty(value = "生成后的短链")
     private String shortLink;
+
+    @ApiModelProperty(value = "原始长链接")
+    private String originalUrl;
 }

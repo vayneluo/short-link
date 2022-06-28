@@ -7,4 +7,14 @@ package me.lattice.shortlink.common.constant;
  */
 public class HttpConstant {
     public static final String RESP_RESULT_ANNOTATION = "RESPONSE_RESULT_ANNOTATION";
+
+    public static final String HTTP_LINK = "http://";
+
+    public static final String HTTPS_LINK = "https://";
+    
+    public static final String REDIRECT_PREFIX = "redirect:";
+
+
+
+
 }
