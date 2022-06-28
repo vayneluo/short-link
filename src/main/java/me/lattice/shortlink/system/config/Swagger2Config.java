@@ -1,4 +1,4 @@
-package me.lattice.shortlink.common.config;
+package me.lattice.shortlink.system.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +11,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
-@Configuration // 标明是配置类
-@EnableSwagger2 //开启swagger功能
-public class SwaggerConfig {
+//@Configuration // 标明是配置类
+//@EnableSwagger2 //开启swagger功能
+public class Swagger2Config {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)  // DocumentationType.SWAGGER_2 固定的，代表swagger2

@@ -1,9 +1,12 @@
 package me.lattice.shortlink.service;
 
 import cn.hutool.crypto.SecureUtil;
+import me.lattice.shortlink.common.constant.RedisConstant;
+import me.lattice.shortlink.common.constant.RedisKeyConstant;
 import me.lattice.shortlink.common.constant.ShortLinkConstant;
 import me.lattice.shortlink.common.enums.UrlTypeEnum;
 import me.lattice.shortlink.common.properties.ShortLinkDomainProperty;
+import me.lattice.shortlink.common.utiils.RedisUtils;
 import me.lattice.shortlink.common.utiils.ShortLinkUtils;
 import me.lattice.shortlink.common.utiils.UrlUtil;
 import me.lattice.shortlink.entity.UrlMapping;
@@ -51,6 +54,7 @@ public class ShortLinkService {
         if (Objects.nonNull(urlMapping)) {
             String shortLink = urlMapping.getShortLink();
             // set redis cache
+            RedisUtils.setValueTimeout(RedisUtils.generateKey(shortLink), urlMapping.getOriginUrl(), RedisConstant.SHORT_LINK_TTL);
 
             return ShortLinkGenRsp.builder()
                     .shortLink(domainProperty.convertShortLink(shortLink))
@@ -88,7 +92,7 @@ public class ShortLinkService {
         }
         shortLinkBizService.insertUrlMapping(urlMapping);
         // set redis cache
-
+        RedisUtils.setValueTimeout(RedisUtils.generateKey(shortLink), urlMapping.getOriginUrl(), RedisConstant.SHORT_LINK_TTL);
         return domainProperty.convertShortLink(shortLink);
     }
 

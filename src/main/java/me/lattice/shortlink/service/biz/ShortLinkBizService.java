@@ -25,7 +25,7 @@ public class ShortLinkBizService {
      */
     public UrlMapping findShortLinkByMD5(String md5OriginUrl) {
         QueryWrapper<UrlMapping> wrapper = new QueryWrapper<>();
-        wrapper.eq("originUrlMd5", md5OriginUrl);
+        wrapper.eq("origin_url_md5", md5OriginUrl);
         return urlMappingMapper.selectOne(wrapper);
     }
 

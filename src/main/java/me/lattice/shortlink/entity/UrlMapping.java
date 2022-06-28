@@ -1,5 +1,6 @@
 package me.lattice.shortlink.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @date 2022/6/27 13:41
  */
 @Data
+@TableName("tb_url_mapping")
 public class UrlMapping {
 
     private Long urlId;
